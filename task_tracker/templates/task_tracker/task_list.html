@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Task List{% endblock %}
+
+{% block content %}
+    <h1>Task List</h1>
+    <form method="get">
+        <input type="text" name="q" placeholder="Search task...">
+        <button type="submit">Search</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th><a href="?sort_by=title{% if sort_by == 'title' %}&amp;order_by=desc{% endif %}">Title</a></th>
+                <th>Description</th>
+                <th><a href="?sort_by=status{% if sort_by == 'status' %}&amp;order_by=desc{% endif %}">Status</a></th>
+                <th><a href="?sort_by=due_date{% if sort_by == 'due_date' %}&amp;order_by=desc{% endif %}">Due Date</a></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+                <tr>
+                    <td>{{ task.title }}</td>
+                    <td>{{ task.description }}</td>
+                    <td>{{ task.status }}</td>
+                    <td>{{ task.due_date }}</td>
+                    <td>
+                        <a href="{% url 'task_tracker:task_update' task.pk %}">Edit</a>
+                        <a href="{% url 'task_tracker:task_delete' task.pk %}">Delete</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No tasks found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
