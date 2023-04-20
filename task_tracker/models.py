@@ -1,4 +1,9 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+class User(AbstractUser):
+    full_name = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
 
 class Task(models.Model):
     STATUS_CHOICES = [
@@ -8,6 +13,7 @@ class Task(models.Model):
         ('canceled', 'Canceled'),
     ]
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     description = models.TextField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')

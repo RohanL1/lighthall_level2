@@ -12,3 +12,7 @@ class TaskForm(forms.ModelForm):
         widgets = {
             'due_date': DateInput()
         }
+
+class LoginForm(forms.Form):
+    full_name = forms.CharField(max_length=100)
+    email = forms.EmailField()
