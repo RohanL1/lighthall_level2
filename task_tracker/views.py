@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Task
-from .forms import TaskForm
+from django.contrib.auth import authenticate, login
+from .models import Task, User
+from .forms import TaskForm, LoginForm
 from django.db.models import Q
 
 # def task_list(request):
@@ -47,3 +48,20 @@ def task_delete(request, pk):
         task.delete()
         return redirect('task_tracker:task_list')
     return render(request, 'task_tracker/task_confirm_delete.html', {'task': task})
+
+from .models import Task, User
+from .forms import TaskForm, LoginForm
+
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            user = authenticate(request, username=username)
+            if user is not None:
+                login(request, user)
+                request.session['user_id'] = user.id
+                return redirect('task_tracker:task_list')
+    else:
+        form = LoginForm()
+    return render(request, 'task_tracker/login.html', {'form': form})
