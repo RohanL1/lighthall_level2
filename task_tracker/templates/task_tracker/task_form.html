@@ -2,12 +2,16 @@
 {% load static %}
 
 {% block content %}
-    <h1>{%if form.instance.pk %}
-        Edit Task "{{ form.instance.title }}"
-    {% else %}
-        Create Task
-    {% endif %}
+
+<div class="text-center">
+    <h1>
+        {%if form.instance.pk %}
+            Edit Task "{{ form.instance.title }}"
+        {% else %}
+            Create Task
+        {% endif %}
     </h1>
+</div>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
